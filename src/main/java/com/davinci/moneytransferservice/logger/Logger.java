@@ -5,8 +5,10 @@ import com.davinci.moneytransferservice.model.Transfer;
 import org.springframework.http.HttpStatus;
 
 import java.io.File;
+import java.io.FileOutputStream;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.nio.channels.FileLock;
 import java.nio.file.Paths;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -41,11 +43,18 @@ public class Logger {
     }
 
     public void logException(Exception e, HttpStatus status) {
-        try(FileWriter fw = new FileWriter(errorPath)) {
-            fw.append(String.format("%s %-6s%s\n", LocalDateTime.now().format(dateFormat), status.value(), e.getMessage()));
-            fw.flush();
-        } catch (IOException ex) {
-            throw new OperationFail("Logger error");
+        boolean written = false;
+        while(!written) {
+            try(FileOutputStream fos = new FileOutputStream(errorPath);
+                FileWriter fw = new FileWriter(errorPath);
+                FileLock lock = fos.getChannel().lock()) {
+                fw.append(String.format("%s %-6s%s\n", LocalDateTime.now().format(dateFormat), status.value(), e.getMessage()));
+                written = true;
+                fw.flush();
+                lock.release();
+            } catch (IOException ex) {
+                throw new OperationFail("Logger error");
+            }
         }
     }
 

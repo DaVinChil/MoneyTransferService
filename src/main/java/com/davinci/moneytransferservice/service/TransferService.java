@@ -12,8 +12,12 @@ import org.springframework.stereotype.Service;
 @Service
 public class TransferService {
 
-    @Autowired
     private OperationRepository repository;
+
+    @Autowired
+    public TransferService(OperationRepository repo){
+        this.repository = repo;
+    }
 
     public String doTransfer(Transfer transfer){
         return repository.transferMoney(transfer).orElseThrow(() -> new OperationFail("Internal exception"));

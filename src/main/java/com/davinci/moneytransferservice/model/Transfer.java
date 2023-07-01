@@ -1,6 +1,7 @@
 package com.davinci.moneytransferservice.model;
 
 import com.davinci.moneytransferservice.exception.InvalidData;
+import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -13,10 +14,16 @@ import java.time.Year;
 @AllArgsConstructor
 @NoArgsConstructor
 public class Transfer {
+
+    @NotBlank
     private String cardFromNumber;
+    @NotBlank
     private String cardFromValidTill;
+    @NotBlank
     private String cardFromCVV;
+    @NotBlank
     private String cardToNumber;
+    @NotBlank
     private Amount amount;
     private String operationId;
 

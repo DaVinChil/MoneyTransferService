@@ -5,9 +5,10 @@ import com.davinci.moneytransferservice.model.Transfer;
 import com.davinci.moneytransferservice.service.TransferService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.HttpStatus;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.HashMap;
 
 @RestController
 public class Controller {
@@ -18,13 +19,15 @@ public class Controller {
         this.service = service;
     }
 
-    @PostMapping("/transfer")
-    public String transferMoney(@RequestBody Transfer transfer){
-        return service.doTransfer(transfer);
+    @PostMapping(value = "/transfer", produces = "application/json")
+    @ResponseBody
+    public HashMap<String, String> transferMoney(@RequestBody Transfer transfer){
+        return new HashMap<>(){{put("operationId", service.doTransfer(transfer));}};
     }
 
-    @PostMapping("/confirmOperation")
-    public String confirmOperation(@RequestBody Confirmation confirmation){
-        return service.confirmOperation(confirmation);
+    @PostMapping(value = "/confirmOperation", produces = "application/json")
+    @ResponseBody
+    public HashMap<String, String> confirmOperation(@RequestBody Confirmation confirmation){
+        return new HashMap<>(){{put("operationId", service.confirmOperation(confirmation));}};
     }
 }
