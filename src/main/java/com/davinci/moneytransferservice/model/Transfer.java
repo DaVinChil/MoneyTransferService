@@ -34,7 +34,7 @@ public class Transfer {
         int curYear = Year.now().getValue();
         int curMonth = LocalDate.now().getMonthValue();
 
-        if (year < curYear){
+        if (year < (curYear % 100)){
             throw new InvalidData("The validity period of the card is over");
         } else if(year == curYear && month < curMonth) {
             throw new InvalidData("The validity period of the card is over");

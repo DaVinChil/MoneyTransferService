@@ -49,10 +49,10 @@ public class OperationRepository {
             Transfer transfer = new Transfer();
             operation.setDate(LocalDate.parse(props[0] + " " + props[1], formatter));
             transfer.setOperationId(props[2]);
-            transfer.setCardFromNumber(props[3].substring(1, props[3].length()-1));
+            transfer.setCardFromNumber(props[3]);
             transfer.setCardFromValidTill(props[4]);
             transfer.setCardFromCVV(props[5]);
-            transfer.setCardToNumber(props[6].substring(1, props[6].length()-1));
+            transfer.setCardToNumber(props[6]);
             transfer.setAmount(new Amount(Integer.parseInt(props[7]), props[8]));
             operation.setTransfer(transfer);
 
@@ -69,7 +69,7 @@ public class OperationRepository {
             while((line = raf.readLine()) != null){
                 bytesPassed += line.length() + 1;
                 if(line.contains(id)) {
-                    raf.seek(bytesPassed-9);
+                    raf.seek(bytesPassed-10);
                     raf.writeBytes("CONFIRMED");
                     return true;
                 }

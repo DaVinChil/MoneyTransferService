@@ -42,7 +42,7 @@ public class Logger {
 
     public void logException(Exception e, HttpStatus status) {
         try(FileWriter fw = new FileWriter(errorPath)) {
-            fw.write(String.format("%s %-6s%s\n", LocalDateTime.now().format(dateFormat), status.value(), e.getMessage()));
+            fw.append(String.format("%s %-6s%s\n", LocalDateTime.now().format(dateFormat), status.value(), e.getMessage()));
             fw.flush();
         } catch (IOException ex) {
             throw new OperationFail("Logger error");
@@ -51,7 +51,7 @@ public class Logger {
 
     public void logTransfer(Transfer transfer) {
         try(FileWriter fw = new FileWriter(operationPath)) {
-            fw.write(String.format("%s %s (%s) %s %s (%s) %d %s %s %s\n",
+            fw.append(String.format("[%s] %s %s %s %s %s %d %s %s\n",
                     LocalDateTime.now().format(dateFormat), transfer.getOperationId(),
                     transfer.getCardFromNumber(),
                     transfer.getCardFromValidTill(), transfer.getCardFromCVV(),
