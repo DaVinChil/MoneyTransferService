@@ -8,7 +8,6 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import org.hibernate.validator.constraints.Length;
 
 import java.time.LocalDate;
 import java.time.Year;
@@ -20,16 +19,16 @@ import java.time.Year;
 public class Transfer {
 
     @NotBlank
-    @Length(min=16, max=16)
+    @Pattern(regexp="\\d{16}")
     private String cardFromNumber;
     @NotBlank
     @Pattern(regexp = "^(0[7-9]|1[0-2])(2[3-9]|[3-9][0-9])$")
     private String cardFromValidTill;
     @NotBlank
-    @Length(min=3, max=3)
+    @Pattern(regexp="\\d{3}")
     private String cardFromCVV;
     @NotBlank
-    @Length(min=16, max=16)
+    @Pattern(regexp="\\d{16}")
     private String cardToNumber;
     @NotEmpty
     private Amount amount;
