@@ -2,19 +2,18 @@
 <Configuration status="WARN" monitorInterval="30">
     <CustomLevels>
         <CustomLevel name="transfer" intLevel="1"/>
-        <CustomLevel name="confirmation" intLevel="2"/>
     </CustomLevels>
     <Appenders>
         <Console name="ConsoleAppender" target="SYSTEM_OUT" follow="true">
             <PatternLayout pattern="%d{yyyy-MM-dd HH:mm:ss.SSS} %5p ${hostName} --- [%15.15t] %-40.40c{1.} : %m%n%ex"/>
         </Console>
-        <File name="FileAppender" fileName="operations.log">
+        <File name="FileAppender" fileName="logs.log">
             <PatternLayout pattern="[%d{yyyy-MM-dd HH:mm:ss.SSS}] %m%n%ex"/>
         </File>
     </Appenders>
     <Loggers>
         <Root level="all">
-            <AppenderRef ref="FileAppender" level="confirmation"/>
+            <AppenderRef ref="FileAppender" level="transfer"/>
             <AppenderRef ref="ConsoleAppender" level="info"/>
         </Root>
     </Loggers>

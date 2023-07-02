@@ -39,8 +39,8 @@ public class TransferLogger {
                 transfer.getCardFromCVV(),
                 transfer.getCardToNumber(),
                 transfer.getAmount().getValue(),
-                transfer.getAmount().getCurrency()),
-                success ? "SUCCESS" : "DENIED");
+                transfer.getAmount().getCurrency(),
+                success ? "SUCCESS" : "DENIED"));
     }
 
     public void logTransferDenied(Transfer transfer){
