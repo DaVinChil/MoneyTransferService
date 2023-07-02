@@ -1,1 +1,6 @@
 services:
+  money:
+    build: ./
+    image: 'money:latest'
+    ports:
+      - '5500'

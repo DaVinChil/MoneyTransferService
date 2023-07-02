@@ -21,13 +21,13 @@ public class Controller {
 
     @PostMapping(value = "/transfer", produces = "application/json")
     @ResponseBody
-    public HashMap<String, String> transferMoney(@RequestBody Transfer transfer){
+    public HashMap<String, String> transferMoney(@RequestBody @Valid Transfer transfer){
         return new HashMap<>(){{put("operationId", service.doTransfer(transfer));}};
     }
 
     @PostMapping(value = "/confirmOperation", produces = "application/json")
     @ResponseBody
-    public HashMap<String, String> confirmOperation(@RequestBody Confirmation confirmation){
+    public HashMap<String, String> confirmOperation(@RequestBody @Valid Confirmation confirmation){
         return new HashMap<>(){{put("operationId", service.confirmOperation(confirmation));}};
     }
 }

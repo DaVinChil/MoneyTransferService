@@ -10,4 +10,7 @@ public class InvalidData extends RuntimeException{
     public void setId(int id){
         this.id = id;
     }
+    public int getId(){
+        return id;
+    }
 }

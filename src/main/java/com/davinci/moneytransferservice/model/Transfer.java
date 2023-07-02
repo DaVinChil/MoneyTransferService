@@ -2,28 +2,36 @@ package com.davinci.moneytransferservice.model;
 
 import com.davinci.moneytransferservice.exception.InvalidData;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.Pattern;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.hibernate.validator.constraints.Length;
 
 import java.time.LocalDate;
 import java.time.Year;
 
 @Getter
+@Setter
 @AllArgsConstructor
 @NoArgsConstructor
 public class Transfer {
 
     @NotBlank
+    @Length(min=16, max=16)
     private String cardFromNumber;
     @NotBlank
+    @Pattern(regexp = "^(0[7-9]|1[0-2])(2[3-9]|[3-9][0-9])$")
     private String cardFromValidTill;
     @NotBlank
+    @Length(min=3, max=3)
     private String cardFromCVV;
     @NotBlank
+    @Length(min=16, max=16)
     private String cardToNumber;
-    @NotBlank
+    @NotEmpty
     private Amount amount;
     private String operationId;
 

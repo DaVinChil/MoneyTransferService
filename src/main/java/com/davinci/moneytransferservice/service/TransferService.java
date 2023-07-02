@@ -2,7 +2,6 @@ package com.davinci.moneytransferservice.service;
 
 import com.davinci.moneytransferservice.exception.InvalidData;
 import com.davinci.moneytransferservice.exception.OperationFail;
-import com.davinci.moneytransferservice.logger.Logger;
 import com.davinci.moneytransferservice.model.Confirmation;
 import com.davinci.moneytransferservice.model.Transfer;
 import com.davinci.moneytransferservice.repository.OperationRepository;

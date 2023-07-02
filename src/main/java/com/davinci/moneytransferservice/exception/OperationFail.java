@@ -9,4 +9,8 @@ public class OperationFail extends RuntimeException{
     public void setId(int id){
         this.id = id;
     }
+
+    public int getId(){
+        return id;
+    }
 }

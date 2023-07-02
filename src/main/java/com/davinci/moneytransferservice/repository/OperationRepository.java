@@ -1,49 +1,40 @@
 package com.davinci.moneytransferservice.repository;
 
+import com.davinci.moneytransferservice.exception.InvalidData;
 import com.davinci.moneytransferservice.exception.OperationFail;
-import com.davinci.moneytransferservice.logger.Logger;
+import com.davinci.moneytransferservice.logger.TransferLogger;
 import com.davinci.moneytransferservice.model.Confirmation;
 import com.davinci.moneytransferservice.model.Transfer;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Repository;
 
 import java.io.*;
 import java.util.Optional;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicInteger;
 
-@Component
+@Repository
 public class OperationRepository {
     private static final AtomicInteger id = new AtomicInteger(0);
-    private static final Logger logger = Logger.getInstance();
+    private static final TransferLogger logger = TransferLogger.getInstance();
+    private static final ConcurrentHashMap<String, Transfer> data = new ConcurrentHashMap<>();
 
     public Optional<String> transferMoney(Transfer transfer){
         transfer.setOperationId(String.valueOf(id.getAndIncrement()));
-        logger.logTransfer(transfer);
+        data.put(transfer.getOperationId(), transfer);
         return Optional.ofNullable(transfer.getOperationId());
     }
 
     public Optional<String> confirmOperation(Confirmation confirmation){
-        if(!findOperationAndConfirm(confirmation.getOperationId())) {
-            return Optional.empty();
-        }
-        return Optional.of(confirmation.getOperationId());
-    }
-
-    private boolean findOperationAndConfirm(String id){
-        try(RandomAccessFile raf = new RandomAccessFile(logger.getOperationPath(), "rw")){
-            String line;
-            long bytesPassed = 0;
-            while((line = raf.readLine()) != null){
-                bytesPassed += line.length() + 1;
-                String opId = line.split(" ")[2];
-                if(opId.equals(id)) {
-                    raf.seek(bytesPassed-10);
-                    raf.writeBytes("CONFIRMED");
-                    return true;
-                }
+        if(data.containsKey(confirmation.getOperationId())) {
+            if(!confirmation.getCode().equals("0000")) {
+                logger.logTransferDenied(data.get(confirmation.getOperationId()));
+                throw new InvalidData("Wrong confirmation code");
             }
-            return false;
-        } catch (IOException e) {
-            throw new OperationFail("Internal exception");
+        } else {
+            throw new InvalidData("No such operation");
         }
+
+        logger.logTransferSuccess(data.get(confirmation.getOperationId()));
+        return Optional.of(confirmation.getOperationId());
     }
 }

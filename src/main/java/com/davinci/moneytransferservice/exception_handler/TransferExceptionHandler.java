@@ -2,29 +2,42 @@ package com.davinci.moneytransferservice.exception_handler;
 
 import com.davinci.moneytransferservice.exception.InvalidData;
 import com.davinci.moneytransferservice.exception.OperationFail;
-import com.davinci.moneytransferservice.logger.Logger;
+import com.davinci.moneytransferservice.logger.TransferLogger;
+import org.springframework.boot.actuate.autoconfigure.observation.ObservationProperties;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
+import java.util.HashMap;
 import java.util.concurrent.atomic.AtomicInteger;
 
 @RestControllerAdvice
 public class TransferExceptionHandler {
     private static final AtomicInteger exceptionId = new AtomicInteger(0);
-    private final Logger logger = Logger.getInstance();
+    private static final TransferLogger logger = TransferLogger.getInstance();
 
     @ExceptionHandler(InvalidData.class)
-    public ResponseEntity<InvalidData> invalidDataHandler(InvalidData ide){
+    public ResponseEntity<HashMap<String, Object>> invalidDataHandler(InvalidData ide){
         ide.setId(exceptionId.getAndIncrement());
-        logger.logException(ide, HttpStatus.BAD_REQUEST);
-        return new ResponseEntity<>(ide, HttpStatus.BAD_REQUEST);
+        logger.logException(ide, HttpStatus.BAD_REQUEST, ide.getId());
+        return new ResponseEntity<>(
+                new HashMap<>(){{
+                    put("message", ide.getMessage());
+                    put("id", ide.getId());
+                }},
+                HttpStatus.BAD_REQUEST);
     }
 
     @ExceptionHandler(OperationFail.class)
-    public ResponseEntity<OperationFail> operationFailHandler(OperationFail ope){
+    public ResponseEntity<HashMap<String, Object>> operationFailHandler(OperationFail ope){
         ope.setId(exceptionId.getAndIncrement());
-        return new ResponseEntity<>(ope, HttpStatus.INTERNAL_SERVER_ERROR);
+        logger.logException(ope, HttpStatus.INTERNAL_SERVER_ERROR, ope.getId());
+        return new ResponseEntity<>(
+                new HashMap<>(){{
+                    put("message", ope.getMessage());
+                    put("id", ope.getId());
+                }},
+                HttpStatus.INTERNAL_SERVER_ERROR);
     }
 }
