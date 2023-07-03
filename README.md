@@ -13,7 +13,7 @@ To run the Money Transfer Service locally, follow these steps:
    ```
 3. Build the application using Gradle:
    ```gradle
-   gradle clean install
+   gradle clean build
    ```
 4. Run the application:
     ```cmd
@@ -63,9 +63,9 @@ In field *'operationId'* use id, you recieved from transfer request.
   ```
 
 ## **Logging**
-Every operation is logging into *[logs.log](/logs.log)* file using *[log4j2](https://logging.apache.org/log4j/2.x/)*. Logging format:
+Each operation is logging into *[logs.log](/logs.log)* file using *[log4j2](https://logging.apache.org/log4j/2.x/)*. Logging format:
 ```
-yyyy-MM-dd HH:mm:ss <operation-id> <card-from-number> <card-valid-till> <cvv> <card-to-Number> <amount> <currency> <status>
+<yyyy-MM-dd HH:mm:ss> <operation-id> <card-from-number> <card-valid-till> <cvv> <card-to-Number> <amount> <currency> <status>
 ```
 
 ## **Error Handling**
