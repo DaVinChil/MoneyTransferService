@@ -65,7 +65,7 @@ In field *'operationId'* use id, you recieved from transfer request.
 ## **Logging**
 Each operation is logging into *[logs.log](/logs.log)* file using *[log4j2](https://logging.apache.org/log4j/2.x/)*. Logging format:
 ```
-<yyyy-MM-dd HH:mm:ss> <operation-id> <card-from-number> <card-valid-till> <cvv> <card-to-Number> <amount> <currency> <status>
+<yyyy-MM-dd HH:mm:ss> <operation-id> <card-from-number> <card-to-Number> <amount> <commission> <currency> <status>
 ```
 
 ## **Error Handling**
