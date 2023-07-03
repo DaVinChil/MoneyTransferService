@@ -32,13 +32,12 @@ public class TransferLogger {
     }
 
     public void logTransfer(Transfer transfer, boolean success){
-        logger.log(Level.forName("transfer", 1), String.format("%s %s %s %s %s %d %s %s",
+        logger.log(Level.forName("transfer", 1), String.format("%s %s %s %f %f %s %s",
                 transfer.getOperationId(),
                 transfer.getCardFromNumber(),
-                transfer.getCardFromValidTill(),
-                transfer.getCardFromCVV(),
                 transfer.getCardToNumber(),
-                transfer.getAmount().getValue(),
+                transfer.getAmount().getValue() / 100.0,
+                transfer.getAmount().getValue() / 10000.0,
                 transfer.getAmount().getCurrency(),
                 success ? "SUCCESS" : "DENIED"));
     }
