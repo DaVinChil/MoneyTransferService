@@ -25,9 +25,12 @@ public class OperationRepository {
     }
 
     public Optional<String> confirmOperation(Confirmation confirmation){
+        System.out.println(data);
+        System.out.println(confirmation.getOperationId() + " " + confirmation.getCode());
         if(data.containsKey(confirmation.getOperationId())) {
             if(!confirmation.getCode().equals("0000")) {
                 logger.logTransferDenied(data.get(confirmation.getOperationId()));
+                data.remove(confirmation.getOperationId());
                 throw new InvalidData("Wrong confirmation code");
             }
         } else {
@@ -35,6 +38,7 @@ public class OperationRepository {
         }
 
         logger.logTransferSuccess(data.get(confirmation.getOperationId()));
+        data.remove(confirmation.getOperationId());
         return Optional.of(confirmation.getOperationId());
     }
 }

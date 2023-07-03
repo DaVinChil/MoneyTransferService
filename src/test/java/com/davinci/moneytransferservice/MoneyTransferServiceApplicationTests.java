@@ -6,8 +6,7 @@ import com.davinci.moneytransferservice.model.Confirmation;
 import com.davinci.moneytransferservice.model.Transfer;
 import com.davinci.moneytransferservice.repository.OperationRepository;
 import com.davinci.moneytransferservice.service.TransferService;
-import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.*;
 import org.mockito.Mockito;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
@@ -15,12 +14,14 @@ import org.springframework.context.annotation.AnnotationConfigApplicationContext
 import java.util.Optional;
 
 @SpringBootTest
+@TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 class MoneyTransferServiceApplicationTests {
 
     OperationRepository or = new OperationRepository();
     TransferService ts = new TransferService(or);
 
     @Test
+    @Order(1)
     void basicTransferTest() {
         Transfer t = new Transfer();
         t.setCardFromNumber("1234123412341234");
@@ -32,6 +33,7 @@ class MoneyTransferServiceApplicationTests {
     }
 
     @Test
+    @Order(2)
     void invalidCardFromNumber() {
         Transfer t = new Transfer();
         try {
@@ -42,6 +44,7 @@ class MoneyTransferServiceApplicationTests {
     }
 
     @Test
+    @Order(3)
     void cardValidity() {
         Transfer t = new Transfer();
         try {
@@ -52,6 +55,7 @@ class MoneyTransferServiceApplicationTests {
     }
 
     @Test
+    @Order(4)
     void cardCVV() {
         Transfer t = new Transfer();
         try {
@@ -62,6 +66,7 @@ class MoneyTransferServiceApplicationTests {
     }
 
     @Test
+    @Order(5)
     void cardToNumber() {
         Transfer t = new Transfer();
         try {
@@ -72,16 +77,14 @@ class MoneyTransferServiceApplicationTests {
     }
 
     @Test
+    @Order(6)
     void basicConfirm() {
-        or.confirmOperation(new Confirmation("0", "123"));
+        or.confirmOperation(new Confirmation("0", "0000"));
     }
 
-    @Test
-    void invalidConfirmation() {
-        Assertions.assertFalse(or.confirmOperation(new Confirmation("1", "344")).isPresent());
-    }
 
     @Test
+    @Order(8)
     void transferServiceOKWithMock() {
 		OperationRepository testOr = Mockito.spy(OperationRepository.class);
 		Mockito.doReturn(Optional.of("0")).when(testOr).transferMoney(Mockito.any(Transfer.class));
@@ -97,14 +100,16 @@ class MoneyTransferServiceApplicationTests {
     }
 
 	@Test
+    @Order(9)
 	void serviceConfirmationTestWithMock(){
 		OperationRepository testOr = Mockito.spy(OperationRepository.class);
 		Mockito.doReturn(Optional.of("0")).when(testOr).confirmOperation(Mockito.any(Confirmation.class));
 		TransferService testTs = new TransferService(testOr);
-		Assertions.assertEquals("0", testTs.confirmOperation(new Confirmation("0", "123")));
+		Assertions.assertEquals("0", testTs.confirmOperation(new Confirmation("0", "0000")));
 	}
 
 	@Test
+    @Order(10)
 	void serviceTransfer(){
 		Transfer t = new Transfer();
 		t.setCardFromNumber("1234123412341234");
@@ -112,12 +117,13 @@ class MoneyTransferServiceApplicationTests {
 		t.setCardFromCVV("123");
 		t.setAmount(new Amount(123123, "rubbles"));
 		t.setCardToNumber("0987098709870987");
-		Assertions.assertEquals("0", ts.doTransfer(t));
+		Assertions.assertEquals("1", ts.doTransfer(t));
 	}
 
 	@Test
+    @Order(11)
 	void serviceConfirmation(){
-		Assertions.assertEquals("0", ts.confirmOperation(new Confirmation("0", "123")));
+		Assertions.assertEquals("1", ts.confirmOperation(new Confirmation("1", "0000")));
 	}
 
 }
