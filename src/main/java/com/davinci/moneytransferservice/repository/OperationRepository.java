@@ -25,8 +25,6 @@ public class OperationRepository {
     }
 
     public Optional<String> confirmOperation(Confirmation confirmation){
-        System.out.println(data);
-        System.out.println(confirmation.getOperationId() + " " + confirmation.getCode());
         if(data.containsKey(confirmation.getOperationId())) {
             if(!confirmation.getCode().equals("0000")) {
                 logger.logTransferDenied(data.get(confirmation.getOperationId()));

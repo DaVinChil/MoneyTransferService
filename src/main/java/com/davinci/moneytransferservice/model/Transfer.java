@@ -23,7 +23,7 @@ public class Transfer {
     @Pattern(regexp="\\d{16}")
     private String cardFromNumber;
     @NotBlank
-    @Pattern(regexp = "^(0[7-9]|1[0-2])(2[3-9]|[3-9][0-9])$")
+    @Pattern(regexp = "^(0[7-9]|1[0-2])/(2[3-9]|[3-9][0-9])$")
     private String cardFromValidTill;
     @NotBlank
     @Pattern(regexp="\\d{3}")

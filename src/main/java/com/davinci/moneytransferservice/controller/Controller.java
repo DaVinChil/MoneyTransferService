@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
 
+@CrossOrigin
 @RestController
 public class Controller {
     private TransferService service;

@@ -32,7 +32,7 @@ public class TransferLogger {
     }
 
     public void logTransfer(Transfer transfer, boolean success){
-        logger.log(Level.forName("transfer", 1), String.format("%s %s %s %f %f %s %s",
+        logger.log(Level.forName("transfer", 1), String.format("%5s %s %s %13.2f %13.2f %-5s %s",
                 transfer.getOperationId(),
                 transfer.getCardFromNumber(),
                 transfer.getCardToNumber(),
