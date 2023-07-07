@@ -6,43 +6,48 @@ import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.http.HttpStatus;
+import org.springframework.stereotype.Component;
 
+@Component
 public class TransferLogger {
-    private static TransferLogger INSTANCE;
-    private static Logger logger;
+    private Logger logger = LogManager.getLogger(TransferLogger.class);
+    private final double COMMISSION = 10000;
+    private final double RUB_RATIO = 100;
+    private final String SUCCESS = "SUCCESS";
+    private final String DENIED = "DENIED";
+    private final Level TRANSFER_LEVEL = Level.forName("transfer", 1);
+
+
+    private static class TransferLoggerInstanceWrapper {
+        private static final TransferLogger INSTANCE = new TransferLogger();
+    }
 
     public static TransferLogger getInstance() {
-        if (INSTANCE == null) {
-            INSTANCE = new TransferLogger();
-        }
-
-        return INSTANCE;
+        return TransferLoggerInstanceWrapper.INSTANCE;
     }
 
-    private TransferLogger() {
-        logger = LogManager.getLogger(TransferLogger.class);
+    private TransferLogger() {}
+
+    public void logException(Exception e, HttpStatus status, long id) {
+        logger.error(String.format("%d %-6s%s", id, status.value(), e.getMessage()));
     }
 
-    public void logException(Exception e, HttpStatus status, int id) {
-        logger.error(String.format("%s %-6s%s",id, status.value(), e.getMessage()));
+    public void logTransferSuccess(String id, Transfer transfer) {
+        logTransfer(id, transfer, true);
     }
 
-    public void logTransferSuccess(Transfer transfer) {
-        logTransfer(transfer, true);
+    public void logTransfer(String id, Transfer transfer, boolean success){
+        logger.log(TRANSFER_LEVEL, String.format("%5s %s %s %13.2f %13.2f %-5s %s",
+                id,
+                transfer.cardFromNumber(),
+                transfer.cardToNumber(),
+                transfer.amount().value() / RUB_RATIO,
+                transfer.amount().value() / COMMISSION,
+                transfer.amount().currency(),
+                success ? SUCCESS : DENIED));
     }
 
-    public void logTransfer(Transfer transfer, boolean success){
-        logger.log(Level.forName("transfer", 1), String.format("%5s %s %s %13.2f %13.2f %-5s %s",
-                transfer.getOperationId(),
-                transfer.getCardFromNumber(),
-                transfer.getCardToNumber(),
-                transfer.getAmount().getValue() / 100.0,
-                transfer.getAmount().getValue() / 10000.0,
-                transfer.getAmount().getCurrency(),
-                success ? "SUCCESS" : "DENIED"));
-    }
-
-    public void logTransferDenied(Transfer transfer){
-        logTransfer(transfer, false);
+    public void logTransferDenied(String id, Transfer transfer){
+        logTransfer(id, transfer, false);
     }
 }

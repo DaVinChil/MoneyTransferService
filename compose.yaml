@@ -3,4 +3,4 @@ services:
     build: ./
     image: 'money:latest'
     ports:
-      - '5500'
+      - '5500:5500'
