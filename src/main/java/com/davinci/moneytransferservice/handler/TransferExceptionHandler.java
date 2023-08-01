@@ -3,12 +3,9 @@ package com.davinci.moneytransferservice.handler;
 import com.davinci.moneytransferservice.exception.InvalidData;
 import com.davinci.moneytransferservice.exception.OperationFail;
 import com.davinci.moneytransferservice.logger.TransferLogger;
-import jakarta.validation.ConstraintViolationException;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
+import com.davinci.moneytransferservice.response_model.ResponseExceptionContainer;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.validation.BindException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
@@ -48,12 +45,5 @@ public class TransferExceptionHandler {
         return new ResponseEntity<>(
                 exCont,
                 HttpStatus.INTERNAL_SERVER_ERROR);
-    }
-
-    @Getter
-    @AllArgsConstructor
-    private static class ResponseExceptionContainer {
-        private String message;
-        private long id;
     }
 }

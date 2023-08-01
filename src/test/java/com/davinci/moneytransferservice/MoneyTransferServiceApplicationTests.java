@@ -131,6 +131,7 @@ class MoneyTransferServiceApplicationTests {
                 new Amount(123123, "rubbles"))).when(testOr).removeTransfer(Mockito.any());
         Mockito.doReturn(true).when(testOr).containsTransfer(Mockito.any());
         StaticCodeTransferService testTs = new StaticCodeTransferService(testOr, TransferLogger.getInstance());
+
         Assertions.assertEquals("0", testTs.confirmOperation(new Confirmation("0", "0000")));
     }
 
