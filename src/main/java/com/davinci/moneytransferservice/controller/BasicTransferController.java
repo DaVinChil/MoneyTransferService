@@ -5,14 +5,12 @@ import com.davinci.moneytransferservice.model.Transfer;
 import com.davinci.moneytransferservice.response_model.OperationIdResponse;
 import com.davinci.moneytransferservice.service.TransferService;
 import jakarta.validation.Valid;
-import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RequiredArgsConstructor
-@CrossOrigin("{cross.origin.github.io}")
+@CrossOrigin("${cross.origin.github.io}")
 @RestController
 public class BasicTransferController implements TransferController {
 
