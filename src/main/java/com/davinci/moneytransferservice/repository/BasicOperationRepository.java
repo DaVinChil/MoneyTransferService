@@ -1,6 +1,5 @@
 package com.davinci.moneytransferservice.repository;
 
-import com.davinci.moneytransferservice.logger.TransferLogger;
 import com.davinci.moneytransferservice.model.Confirmation;
 import com.davinci.moneytransferservice.model.Transfer;
 import org.springframework.stereotype.Repository;
@@ -12,7 +11,6 @@ import java.util.concurrent.atomic.AtomicInteger;
 @Repository
 public class BasicOperationRepository implements OperationRepository {
     private final AtomicInteger id = new AtomicInteger(0);
-    private final TransferLogger logger = TransferLogger.getInstance();
     private final ConcurrentHashMap<String, Transfer> data = new ConcurrentHashMap<>();
 
     public Optional<String> saveTransfer(Transfer transfer){

@@ -105,7 +105,7 @@ class MoneyTransferServiceApplicationTests {
     void transferServiceOKWithMock() {
         OperationRepository testOr = Mockito.mock(OperationRepository.class);
         Mockito.doReturn(Optional.of("0")).when(testOr).saveTransfer(Mockito.any(Transfer.class));
-        StaticCodeTransferService testTs = new StaticCodeTransferService(testOr, TransferLogger.getInstance());
+        StaticCodeTransferService testTs = new StaticCodeTransferService(testOr);
         Transfer t = new Transfer("1234123412341234",
                 "12/23",
                 "123",
@@ -130,7 +130,7 @@ class MoneyTransferServiceApplicationTests {
                 "0987098709870987",
                 new Amount(123123, "rubbles"))).when(testOr).deleteTransfer(Mockito.any());
         Mockito.doReturn(true).when(testOr).containsTransfer(Mockito.any());
-        StaticCodeTransferService testTs = new StaticCodeTransferService(testOr, TransferLogger.getInstance());
+        StaticCodeTransferService testTs = new StaticCodeTransferService(testOr);
 
         Assertions.assertEquals("0", testTs.confirmOperation(new Confirmation("0", "0000")));
     }
