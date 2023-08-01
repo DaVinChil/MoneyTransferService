@@ -36,7 +36,7 @@ public class TransferLogger {
         logTransfer(id, transfer, true);
     }
 
-    public void logTransfer(String id, Transfer transfer, boolean success) {
+    public synchronized void logTransfer(String id, Transfer transfer, boolean success){
         logger.log(TRANSFER_LEVEL, String.format("%5s %s %s %13.2f %13.2f %-5s %s",
                 id,
                 transfer.cardFromNumber(),

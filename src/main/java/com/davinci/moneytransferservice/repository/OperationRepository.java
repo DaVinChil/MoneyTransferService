@@ -6,13 +6,13 @@ import com.davinci.moneytransferservice.model.Transfer;
 import java.util.Optional;
 
 public interface OperationRepository {
-    Optional<String> transferMoney(Transfer transfer);
+    Optional<String> saveTransfer(Transfer transfer);
 
-    Optional<String> confirmOperation(Confirmation confirmation);
+    Optional<String> saveConfirmation(Confirmation confirmation);
 
     boolean containsTransfer(String id);
 
-    Transfer getTransfer(String id);
+    Transfer findTransfer(String id);
 
-    Transfer removeTransfer(String id);
+    Transfer deleteTransfer(String id);
 }

@@ -16,9 +16,7 @@ import org.springframework.stereotype.Service;
 @Service
 public class StaticCodeTransferService implements TransferService{
 
-    @NonNull
     private final OperationRepository repository;
-    @Autowired
     private final TransferLogger logger;
 
     private final String confirmCode = "0000";

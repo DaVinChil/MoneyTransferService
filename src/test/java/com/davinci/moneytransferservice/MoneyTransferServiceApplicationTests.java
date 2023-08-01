@@ -32,7 +32,7 @@ class MoneyTransferServiceApplicationTests {
                 "123",
                 "0987098709870987",
                 new Amount(123123, "rubbles"));
-        or.transferMoney(t);
+        or.saveTransfer(t);
     }
 
     @Test
@@ -95,7 +95,7 @@ class MoneyTransferServiceApplicationTests {
     @Test
     @Order(6)
     void basicConfirm() {
-        String opId = or.confirmOperation(new Confirmation("0", "0000")).get();
+        String opId = or.saveConfirmation(new Confirmation("0", "0000")).get();
         Assertions.assertEquals("0", opId);
     }
 
@@ -104,7 +104,7 @@ class MoneyTransferServiceApplicationTests {
     @Order(8)
     void transferServiceOKWithMock() {
         OperationRepository testOr = Mockito.mock(OperationRepository.class);
-        Mockito.doReturn(Optional.of("0")).when(testOr).transferMoney(Mockito.any(Transfer.class));
+        Mockito.doReturn(Optional.of("0")).when(testOr).saveTransfer(Mockito.any(Transfer.class));
         StaticCodeTransferService testTs = new StaticCodeTransferService(testOr, TransferLogger.getInstance());
         Transfer t = new Transfer("1234123412341234",
                 "12/23",
@@ -118,17 +118,17 @@ class MoneyTransferServiceApplicationTests {
     @Order(9)
     void serviceConfirmationTestWithMock() {
         OperationRepository testOr = Mockito.mock(OperationRepository.class);
-        Mockito.doReturn(Optional.of("0")).when(testOr).confirmOperation(Mockito.any());
+        Mockito.doReturn(Optional.of("0")).when(testOr).saveConfirmation(Mockito.any());
         Mockito.doReturn(new Transfer("1234123412341234",
                 "12/23",
                 "123",
                 "0987098709870987",
-                new Amount(123123, "rubbles"))).when(testOr).getTransfer(Mockito.any());
+                new Amount(123123, "rubbles"))).when(testOr).findTransfer(Mockito.any());
         Mockito.doReturn(new Transfer("1234123412341234",
                 "12/23",
                 "123",
                 "0987098709870987",
-                new Amount(123123, "rubbles"))).when(testOr).removeTransfer(Mockito.any());
+                new Amount(123123, "rubbles"))).when(testOr).deleteTransfer(Mockito.any());
         Mockito.doReturn(true).when(testOr).containsTransfer(Mockito.any());
         StaticCodeTransferService testTs = new StaticCodeTransferService(testOr, TransferLogger.getInstance());
 

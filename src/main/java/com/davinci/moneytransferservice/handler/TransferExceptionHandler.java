@@ -36,14 +36,4 @@ public class TransferExceptionHandler {
                 exCont,
                 HttpStatus.INTERNAL_SERVER_ERROR);
     }
-
-    @ExceptionHandler({MethodArgumentNotValidException.class})
-    public ResponseEntity<ResponseExceptionContainer> constraintViolationException(Exception cve){
-        long id = exceptionId.getAndIncrement();
-        var exCont = new ResponseExceptionContainer("Invalid data", id);
-        logger.logException(cve, HttpStatus.BAD_REQUEST, id);
-        return new ResponseEntity<>(
-                exCont,
-                HttpStatus.INTERNAL_SERVER_ERROR);
-    }
 }

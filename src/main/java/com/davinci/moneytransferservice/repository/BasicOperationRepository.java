@@ -15,13 +15,13 @@ public class BasicOperationRepository implements OperationRepository {
     private final TransferLogger logger = TransferLogger.getInstance();
     private final ConcurrentHashMap<String, Transfer> data = new ConcurrentHashMap<>();
 
-    public Optional<String> transferMoney(Transfer transfer){
+    public Optional<String> saveTransfer(Transfer transfer){
         String transferId = String.valueOf(id.getAndIncrement());
         data.put(transferId, transfer);
         return Optional.ofNullable(transferId);
     }
 
-    public Optional<String> confirmOperation(Confirmation confirmation){
+    public Optional<String> saveConfirmation(Confirmation confirmation){
         data.remove(confirmation.operationId());
         return Optional.of(confirmation.operationId());
     }
@@ -30,11 +30,11 @@ public class BasicOperationRepository implements OperationRepository {
         return data.containsKey(id);
     }
 
-    public Transfer getTransfer(String id){
+    public Transfer findTransfer(String id){
         return data.get(id);
     }
 
-    public Transfer removeTransfer(String id){
+    public Transfer deleteTransfer(String id){
         return data.remove(id);
     }
 }
